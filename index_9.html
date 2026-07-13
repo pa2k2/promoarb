@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromoArb — Every outcome pays</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f6f4;
+    --card: #ffffff;
+    --ink: #0c1a18;
+    --ink-soft: #47605c;
+    --teal: #0f766e;
+    --teal-deep: #0a3d38;
+    --teal-wash: #e7f2f0;
+    --amber: #b45309;
+    --line: #dbe3df;
+    --line-soft: #e8ede9;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --display: 'Space Grotesk', var(--sans);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+  }
+
+  ::selection { background: var(--teal); color: #fff; }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 60;
+    background: rgba(244, 246, 244, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .logo {
+    font-family: var(--display);
+    font-weight: 700; font-size: 17px; letter-spacing: -0.01em;
+    color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .logo-mark {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--teal);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 600;
+  }
+  .nav-links { display: flex; gap: 1.75rem; align-items: center; }
+  .nav-links a {
+    color: var(--ink-soft); text-decoration: none; font-size: 13.5px; font-weight: 500;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:focus-visible, .btn:focus-visible, .chip:focus-visible {
+    outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+    padding: 9px 18px; border-radius: 6px; cursor: pointer;
+    border: 1px solid transparent; text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .btn-solid { background: var(--teal); color: #fff; }
+  .btn-solid:hover { background: var(--teal-deep); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink-soft); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 4.5rem 0 4rem; }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 4rem; align-items: center;
+  }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--teal);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(32px, 4.4vw, 46px);
+    font-weight: 700; line-height: 1.08; letter-spacing: -0.025em;
+    margin-bottom: 1.1rem;
+  }
+  h1 em { font-style: normal; color: var(--teal); }
+  .hero-sub {
+    font-size: 15.5px; color: var(--ink-soft); max-width: 44ch; margin-bottom: 1.75rem;
+  }
+  .hero-actions { display: flex; gap: 12px; margin-bottom: 2.5rem; }
+
+  .stat-strip {
+    display: flex; gap: 2.25rem; border-top: 1px solid var(--line); padding-top: 1.4rem;
+  }
+  .stat-strip .stat-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px;
+  }
+  .stat-strip .stat-value {
+    font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--ink);
+  }
+
+  /* ---------- The slip (signature) ---------- */
+  .slip {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(12,26,24,0.04), 0 12px 32px -16px rgba(12,26,24,0.14);
+    overflow: hidden;
+  }
+  .slip-head {
+    padding: 14px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .slip-books {
+    font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+  }
+  .slip-books span { color: var(--ink-soft); font-weight: 500; padding: 0 4px; }
+  .slip-tag {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal); background: var(--teal-wash);
+    padding: 4px 9px; border-radius: 4px;
+  }
+  .slip-outcomes { display: grid; grid-template-columns: 1fr 1fr; }
+  .slip-outcome { padding: 16px 18px 14px; }
+  .slip-outcome + .slip-outcome { border-left: 1px dashed var(--line); }
+  .outcome-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 9px;
+  }
+  .outcome-line {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-size: 13px; color: var(--ink-soft); padding: 3px 0;
+  }
+  .outcome-line b { font-weight: 500; color: var(--ink); }
+  .outcome-line .amt { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+  .slip-equals {
+    border-top: 1px dashed var(--line);
+    background: var(--teal-wash);
+    padding: 13px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .slip-equals .eq-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--teal-deep);
+  }
+  .slip-equals .eq-value {
+    font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--teal);
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 4.25rem 0; border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 2.25rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; }
+  h2 {
+    font-family: var(--display); font-size: 26px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.15;
+  }
+  .section-sub { color: var(--ink-soft); font-size: 14px; margin-top: 6px; max-width: 56ch; }
+
+  /* ---------- Board ---------- */
+  .board-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .chip {
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    padding: 7px 14px; border-radius: 100px; cursor: pointer;
+    background: transparent; border: 1px solid var(--line); color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .chip.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+  .board { display: grid; gap: 14px; }
+  .combo {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .combo:hover { border-color: #b9c7c2; box-shadow: 0 8px 24px -14px rgba(12,26,24,0.18); }
+  .combo-top {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 15px 20px; cursor: pointer;
+  }
+  .combo-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .combo-rank {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft); width: 24px; flex-shrink: 0;
+  }
+  .combo-title { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+  .combo-title span { color: var(--ink-soft); font-weight: 500; padding: 0 3px; }
+  .combo-meta {
+    display: flex; gap: 14px; margin-top: 3px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+  }
+  .combo-meta .warn { color: var(--amber); }
+  .combo-right { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+  .combo-profit { text-align: right; }
+  .combo-profit .amt { font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--teal); }
+  .combo-profit .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .combo-caret { color: var(--ink-soft); font-size: 11px; transition: transform 0.15s; }
+  .combo.open .combo-caret { transform: rotate(180deg); }
+
+  .combo-detail { display: none; border-top: 1px dashed var(--line); }
+  .combo.open .combo-detail { display: block; }
+  .combo-detail .slip-outcomes { border-bottom: 1px solid var(--line-soft); }
+  .combo-steps { padding: 14px 20px; }
+  .combo-steps .step-line {
+    display: flex; gap: 10px; font-size: 13px; color: var(--ink-soft); padding: 3px 0;
+  }
+  .combo-steps .step-line b { color: var(--ink); font-weight: 500; }
+  .step-n { font-family: var(--mono); font-size: 11px; color: var(--teal); flex-shrink: 0; padding-top: 2px; }
+
+  .board-empty {
+    text-align: center; padding: 3.5rem 1rem; color: var(--ink-soft);
+    border: 1px dashed var(--line); border-radius: 10px; font-size: 14px;
+  }
+
+  /* ---------- Books table ---------- */
+  .table-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
+    text-align: left; padding: 12px 18px; border-bottom: 1px solid var(--line);
+    background: var(--paper);
+  }
+  td { padding: 11px 18px; border-bottom: 1px solid var(--line-soft); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfa; }
+  td.num { font-family: var(--mono); font-size: 12.5px; }
+  td .book-name { font-weight: 600; }
+  .type-pill {
+    font-family: var(--mono); font-size: 10.5px; padding: 3px 8px; border-radius: 4px;
+    background: var(--line-soft); color: var(--ink-soft); white-space: nowrap;
+  }
+  .type-pill.guaranteed { background: var(--teal-wash); color: var(--teal-deep); }
+  .type-pill.protection { background: #fdf1e3; color: var(--amber); }
+
+  /* ---------- Brand badges ---------- */
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .badge-pair { display: inline-flex; }
+  .badge-pair .badge:last-child { margin-left: -7px; box-shadow: 0 0 0 2px var(--card); }
+  .badge-sm { width: 22px; height: 22px; font-size: 8px; border-radius: 6px; }
+  .book-cell { display: flex; align-items: center; gap: 10px; }
+
+  /* ---------- Pro lock ---------- */
+  .locked .combo-profit .amt, .locked .combo-title, .num-locked {
+    filter: blur(5px); user-select: none; pointer-events: none;
+  }
+  .locked .badge-pair, .locked-row .badge-pair { filter: blur(5px); }
+  .lock-pill {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal-deep); background: var(--teal-wash);
+    padding: 4px 9px; border-radius: 4px; white-space: nowrap;
+  }
+  .pro-banner {
+    background: var(--teal-deep); color: #fff; border-radius: 10px;
+    padding: 1.5rem 1.75rem; margin-top: 14px;
+    display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .pro-banner h3 { font-family: var(--display); font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .pro-banner p { font-size: 13px; opacity: 0.85; }
+  .pro-banner .price { font-family: var(--mono); }
+  .btn-invert { background: #fff; color: var(--teal-deep); }
+  .btn-invert:hover { background: var(--teal-wash); }
+  .pro-link {
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: rgba(255,255,255,0.75); font-size: 12px; text-decoration: underline; font-family: var(--sans);
+  }
+  .pro-link:hover { color: #fff; }
+
+
+  /* ---------- Hedge calculator ---------- */
+  .calc-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1.5rem; align-items: start; }
+  .calc-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.5rem; }
+  .calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .calc-hint { font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft); margin-top: 4px; }
+  .calc-error { color: var(--amber); font-size: 12.5px; margin-top: 8px; display: none; }
+  @media (max-width: 900px) { .calc-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- How it works ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .step-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.5rem;
+  }
+  .step-num {
+    font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--teal);
+    margin-bottom: 0.9rem; display: block;
+  }
+  .step-card h3 { font-family: var(--display); font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .step-card p { font-size: 13.5px; color: var(--ink-soft); }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; }
+  .foot-inner { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .foot-note { font-size: 12px; color: var(--ink-soft); max-width: 62ch; }
+  .foot-note b { color: var(--ink); }
+
+  /* ---------- Modal ---------- */
+  .modal-back {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(12,26,24,0.45); align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-back.show { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 10px; width: 100%; max-width: 420px;
+    padding: 1.75rem; border: 1px solid var(--line);
+  }
+  .modal h3 { font-family: var(--display); font-size: 18px; margin-bottom: 1.25rem; }
+  .field { margin-bottom: 1rem; }
+  .field label {
+    display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px;
+  }
+  .field input, .field select {
+    width: 100%; padding: 9px 12px; font-family: var(--sans); font-size: 14px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink);
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--teal); outline-offset: -1px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.4rem; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .steps { grid-template-columns: 1fr; }
+    .stat-strip { flex-wrap: wrap; gap: 1.25rem 2rem; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 1.15rem; }
+    .nav-links a:not(.btn) { display: none; }
+    .hero { padding: 3rem 0 2.75rem; }
+    section { padding: 3rem 0; }
+    .combo-right { gap: 10px; }
+    .slip-outcomes { grid-template-columns: 1fr; }
+    .slip-outcome + .slip-outcome { border-left: none; border-top: 1px dashed var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#"><span class="logo-mark">±</span>PromoArb</a>
+    <div class="nav-links">
+      <a href="#board">The board</a>
+      <a href="#books">Books</a>
+      <a href="#calc">Calculator</a>
+      <a href="#how">How it works</a>
+      <a href="mailto:promoarbs@gmail.com">Contact</a>
+      <a href="#board" class="btn btn-solid">Open the board</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="live-dot"></span>Tracking <span id="statBooksInline">10</span> verified books &middot; July 2026</div>
+      <h1>Every outcome <em>pays.</em></h1>
+      <p class="hero-sub">Sportsbooks hand out signup bonuses that contradict each other. PromoArb pairs a loss-protected bet on one book against a guaranteed bonus on another — so the slip settles in your favor no matter who wins.</p>
+      <div class="hero-actions">
+        <a href="#board" class="btn btn-solid">See today's combos</a>
+        <a href="#how" class="btn btn-ghost">How the math works</a>
+      </div>
+      <div class="stat-strip">
+        <div><div class="stat-label">Books tracked</div><div class="stat-value" id="statBooks">—</div></div>
+        <div><div class="stat-label">Live combos</div><div class="stat-value" id="statCombos">—</div></div>
+        <div><div class="stat-label">Best combo</div><div class="stat-value" id="statBest">—</div></div>
+        <div><div class="stat-label">Convertible cash on the board</div><div class="stat-value" id="statTotal">—</div></div>
+      </div>
+    </div>
+    <div id="heroSlip"><!-- top combo slip rendered by JS --></div>
+  </div>
+</header>
+
+<section id="board">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>The board</h2>
+        <p class="section-sub">Every profitable pairing of current signup offers, ranked by estimated value. Tap a row to see the full slip and playbook.</p>
+      </div>
+      <button class="btn btn-ghost" onclick="openModal()">+ Track a promo</button>
+    </div>
+    <div class="board-controls" role="group" aria-label="Filter combos">
+      <button class="chip active" data-filter="all" onclick="setFilter('all', this)">All combos</button>
+      <button class="chip" data-filter="high" onclick="setFilter('high', this)">$1,000+</button>
+      <button class="chip" data-filter="mid" onclick="setFilter('mid', this)">$500–999</button>
+      <button class="chip" data-filter="cheap" onclick="setFilter('cheap', this)">Low capital</button>
+    </div>
+    <div class="board" id="boardList"></div>
+  </div>
+</section>
+
+<section id="books">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Books on the board</h2>
+        <p class="section-sub">Current new-user offers being tracked. <b>Guaranteed</b> offers pay whether you win or lose; <b>protection</b> offers refund a losing first bet — the raw material for every combo above.</p>
+      </div>
+    </div>
+    <div class="table-card"><div class="table-scroll">
+      <table>
+        <thead><tr>
+          <th>Sportsbook</th><th>Face value</th><th>Est. cash value</th><th>Min bet</th><th>Type</th><th>Bonus expires</th>
+        </tr></thead>
+        <tbody id="booksTable"></tbody>
+      </table>
+    </div></div>
+  </div>
+</section>
+
+
+<section id="calc">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Hedge calculator</h2>
+        <p class="section-sub">Size the other side of any bet. Enter what you're holding and the best opposing odds you can find — the calculator returns the exact hedge stake that locks the same profit on both branches.</p>
+      </div>
+    </div>
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="field">
+          <label for="cType">What are you hedging?</label>
+          <select id="cType" onchange="calcHedge()">
+            <option value="bonus">Bonus bet (stake not returned)</option>
+            <option value="cash">Cash bet</option>
+            <option value="nosweat">No-sweat bet (refund in bonus bets if it loses)</option>
+          </select>
+        </div>
+        <div class="calc-row">
+          <div class="field">
+            <label for="cStake">Stake ($)</label>
+            <input id="cStake" type="number" value="200" min="0" step="1" oninput="calcHedge()">
+          </div>
+          <div class="field">
+            <label for="cOdds">Your odds</label>
+            <input id="cOdds" type="text" value="+250" oninput="calcHedge()">
+            <div class="calc-hint">American, e.g. +250 or -110</div>
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="field">
+            <label for="cHedgeOdds">Hedge odds</label>
+            <input id="cHedgeOdds" type="text" value="-280" oninput="calcHedge()">
+            <div class="calc-hint">Opposite side, other book</div>
+          </div>
+          <div class="field" id="cConvWrap" style="display:none">
+            <label for="cConv">Refund conversion (%)</label>
+            <input id="cConv" type="number" value="70" min="0" max="100" oninput="calcHedge()">
+            <div class="calc-hint">What the refunded bonus bets convert at</div>
+          </div>
+        </div>
+        <div class="calc-error" id="cError"></div>
+      </div>
+      <div id="calcResult"></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>How a combo works</h2>
+        <p class="section-sub">Three moves. The order matters — that's the whole trick.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <span class="step-num">01</span>
+        <h3>Take the protected side</h3>
+        <p>Open the loss-protection book (say BetMGM's $1,500 first-bet offer) and bet one side of a game. If it wins, you're paid in cash. If it loses, the stake comes back as bonus bets.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">02</span>
+        <h3>Hedge on the guaranteed side</h3>
+        <p>On a second book with a guaranteed offer (like bet-and-get bonus bets), take the opposite side of the same game. Its bonus pays out regardless of the result.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">03</span>
+        <h3>Convert and collect</h3>
+        <p>One side of your hedge always wins in cash, and the bonus bets convert to roughly 70¢ on the dollar by hedging them the same way. Either branch of the slip lands on the same number.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>
+      <a class="logo" href="#"><span class="logo-mark">±</span>PromoArb</a>
+      <p style="font-size:13px;color:var(--ink-soft);margin-top:0.9rem">
+        Spot a new promo, a wrong number, or a dead offer?<br>
+        Write us: <a href="mailto:promoarbs@gmail.com" style="color:var(--teal);font-weight:600;text-decoration:none">promoarbs@gmail.com</a>
+      </p>
+    </div>
+    <p class="foot-note"><b>21+ only.</b> PromoArb is an independent tracker and is not affiliated with, endorsed by, or sponsored by any sportsbook listed. Offers vary by state and change without notice — always confirm terms on the sportsbook before betting. Estimated values reflect typical hedged conversion rates by offer type (45–70% of face value) and assume correct execution — your lines, limits, and results will vary. Note that sportsbooks may restrict or limit accounts that engage in promotional arbitrage. Gambling problem? Call <b>1-800-GAMBLER</b>.</p>
+  </div>
+</footer>
+
+<div class="modal-back" id="proBack" onclick="if(event.target===this) closeProModal()">
+  <div class="modal" role="dialog" aria-label="Unlock PromoArb Pro">
+    <h3>Unlock the full board</h3>
+    <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:1.25rem">
+      Every combo, full playbooks, and real cash values for all books —
+      the average combo on the board is worth <b style="color:var(--ink)">$400+</b>.
+    </p>
+    <a class="btn btn-solid" style="width:100%;justify-content:center;margin-bottom:10px" id="stripeLinkMonthly" href="#" target="_blank" rel="noopener">$19.99 / month</a>
+    <a class="btn btn-ghost" style="width:100%;justify-content:center;margin-bottom:1.25rem" id="stripeLinkAnnual" href="#" target="_blank" rel="noopener">$99 / year&nbsp;<span style="color:var(--teal);font-weight:600">— save 59%</span></a>
+    <div style="border-top:1px dashed var(--line);padding-top:1.1rem">
+      <div class="field">
+        <label for="fCode">Already subscribed? Enter your access code</label>
+        <input id="fCode" type="text" placeholder="ARB-XXXX-XXXX" autocomplete="off">
+        <div id="codeError" style="display:none;color:var(--amber);font-size:12.5px;margin-top:6px">That code didn't match — check the Stripe confirmation email.</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeProModal()">Close</button>
+        <button class="btn btn-solid" onclick="tryUnlock()">Unlock</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="modalBack" onclick="if(event.target===this) closeModal()">
+  <div class="modal" role="dialog" aria-label="Track a promo">
+    <h3>Track a promo</h3>
+    <div class="field"><label for="fBook">Sportsbook</label><input id="fBook" type="text" placeholder="e.g. Circa Sports"></div>
+    <div class="field"><label for="fValue">Bonus value ($)</label><input id="fValue" type="number" placeholder="500"></div>
+    <div class="field"><label for="fMin">Min bet ($)</label><input id="fMin" type="number" placeholder="10"></div>
+    <div class="field"><label for="fType">Offer type</label>
+      <select id="fType">
+        <option value="Bonus bets">Bonus bets (guaranteed)</option>
+        <option value="Loss protection">Loss protection</option>
+        <option value="Bet tokens">Bet reset tokens</option>
+        <option value="Deposit match">Deposit match</option>
+        <option value="Profit boosts">Profit boosts</option>
+        <option value="Bonus if win">Bonus only if bet wins</option>
+      </select>
+    </div>
+    <div class="field"><label for="fExp">Expires (days)</label><input id="fExp" type="number" placeholder="7"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-solid" onclick="addPromo()">Add to board</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ Data ============ */
+/* Verified against promo trackers, July 2026. Face values are the
+   advertised maximums; cash value is computed from type-specific rates. */
+const BASE_PROMOS = [
+  { id: 1,  sportsbook: 'BetMGM',     bonusValue: 1500, minBet: 10, type: 'Loss protection', expiresDays: 7,  note: 'First bet up to $1,500 back in bonus bets if it loses' },
+  { id: 2,  sportsbook: 'Borgata',    bonusValue: 1500, minBet: 10, type: 'Loss protection', expiresDays: 7,  note: 'Same structure as BetMGM (sister book) — separate signup' },
+  { id: 3,  sportsbook: 'bet365',     bonusValue: 1000, minBet: 10, type: 'Loss protection', expiresDays: 7,  note: 'First bet safety net (or take the $150 guaranteed instead)' },
+  { id: 4,  sportsbook: 'FanDuel',    bonusValue: 1000, minBet: 25, type: 'Bet tokens',      expiresDays: 14, note: 'Bet $5/day for 5 days → five $200 reset tokens (refund if lose)' },
+  { id: 5,  sportsbook: 'Fanatics',   bonusValue: 1000, minBet: 100,type: 'Deposit match',   expiresDays: 10, note: 'Wager up to $100/day for 10 days, matched in FanCash' },
+  { id: 6,  sportsbook: 'BetRivers',  bonusValue: 500,  minBet: 10, type: 'Loss protection', expiresDays: 30, note: 'Up to $500 back if first bet loses; 30-day credit window' },
+  { id: 7,  sportsbook: 'Caesars',    bonusValue: 250,  minBet: 1,  type: 'Profit boosts',   expiresDays: 14, note: 'Bet $1 → ten 100% boosts, $25 max stake each (~$250 max upside)' },
+  { id: 8,  sportsbook: 'DraftKings', bonusValue: 200,  minBet: 5,  type: 'Bonus bets',      expiresDays: 7,  note: 'Bet $5, get $200 instantly in eight $25 bonus bets' },
+  { id: 9,  sportsbook: 'Hard Rock',  bonusValue: 150,  minBet: 5,  type: 'Bonus if win',    expiresDays: 7,  note: 'Bet $5, get $150 only if the bet wins — pick a heavy favorite' },
+  { id: 10, sportsbook: 'Bally Bet',  bonusValue: 250,  minBet: 10, type: 'Loss protection', expiresDays: 7,  note: 'Second-chance first bet' },
+];
+
+/* Realistic conversion rates: what each offer type nets in cash
+   after hedging, playthrough, and vig — not face value. */
+const RATES = {
+  'Bonus bets':      0.70, // hedging bonus bets across books nets ≈ 70¢ on the dollar
+  'Bet tokens':      0.50, // refund-if-lose tokens: refund exists only in losing branch, then converts at ~70%
+  'Loss protection': 0.50, // hedged optimally (longshot + hedge) ≈ half of face, guaranteed
+  'Deposit match':   0.55, // qualifying-wager and playthrough requirements eat into face
+  'Profit boosts':   0.45, // boosts apply only to winnings on capped stakes
+  'Bonus if win':    0.55, // bet a heavy favorite to qualify; win probability discounts the face
+};
+const PROTECTION_TYPES = ['Loss protection', 'Bet tokens'];
+let promos = [];
+let currentFilter = 'all';
+
+/* ---------- Pro subscription gate ---------- */
+const FREE_COMBOS = 2;      // combos visible without subscribing
+const FREE_BOOKS = 3;       // books with visible cash values
+/* TODO: replace with your real Stripe Payment Link from dashboard.stripe.com */
+const STRIPE_LINK_MONTHLY = 'https://buy.stripe.com/REPLACE_WITH_MONTHLY_LINK'; // $19.99/mo
+const STRIPE_LINK_ANNUAL  = 'https://buy.stripe.com/REPLACE_WITH_ANNUAL_LINK';  // $99/yr
+/* sha256 of the access code shown to subscribers on the Stripe confirmation page */
+const CODE_HASH = '515d7c2172cf3477be085c911876d2361a81479d498e23e517a27bfecb2ef759';
+
+let isPro = localStorage.getItem('promoarb_pro') === CODE_HASH;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+async function tryUnlock() {
+  const input = document.getElementById('fCode').value.trim().toUpperCase();
+  if (!input) return;
+  const h = await sha256(input);
+  if (h === CODE_HASH) {
+    localStorage.setItem('promoarb_pro', h);
+    isPro = true;
+    closeProModal();
+    refresh();
+  } else {
+    document.getElementById('codeError').style.display = 'block';
+  }
+}
+function openProModal() { document.getElementById('proBack').classList.add('show'); }
+function closeProModal() {
+  document.getElementById('proBack').classList.remove('show');
+  document.getElementById('codeError').style.display = 'none';
+}
+
+function loadPromos() {
+  let custom = [];
+  try { custom = JSON.parse(localStorage.getItem('promoarb_custom') || '[]'); } catch (e) {}
+  promos = [...BASE_PROMOS, ...custom];
+}
+
+const money = n => '$' + Math.round(n).toLocaleString();
+const isProtection = p => PROTECTION_TYPES.includes(p.type);
+const rate = p => RATES[p.type] ?? 0.6;
+const convValue = p => p.bonusValue * rate(p); // realistic cash extracted from the offer
+
+/* Brand marks: each book's colors + short mark, used for badges */
+const BRANDS = {
+  'BetMGM':     { bg: '#101010', fg: '#c5a35c', mark: 'MGM' },
+  'Borgata':    { bg: '#731f30', fg: '#f3d9a4', mark: 'BOR' },
+  'bet365':     { bg: '#14805e', fg: '#ffe100', mark: '365' },
+  'FanDuel':    { bg: '#1381e0', fg: '#ffffff', mark: 'FD'  },
+  'Fanatics':   { bg: '#12284b', fg: '#ffffff', mark: 'FAN' },
+  'BetRivers':  { bg: '#14418b', fg: '#f8c04c', mark: 'BR'  },
+  'Caesars':    { bg: '#0b3b2e', fg: '#c8a24b', mark: 'CZR' },
+  'DraftKings': { bg: '#0f1114', fg: '#53d337', mark: 'DK'  },
+  'Hard Rock':  { bg: '#5f2ee5', fg: '#ffffff', mark: 'HR'  },
+  'Bally Bet':  { bg: '#d5001c', fg: '#ffffff', mark: 'BLY' },
+};
+function badge(name, sm) {
+  const b = BRANDS[name] || { bg: 'var(--teal)', fg: '#fff', mark: name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() };
+  return `<span class="badge ${sm ? 'badge-sm' : ''}" style="background:${b.bg};color:${b.fg}" aria-hidden="true">${b.mark}</span>`;
+}
+/* Working bankroll: protection offers need the full stake plus a hedge;
+   deposit matches cycle qualifying wagers of similar size. All of it is
+   recoverable — it comes back as the bets settle. */
+const bankroll = p => (isProtection(p) || p.type === 'Deposit match')
+  ? p.bonusValue * 2
+  : Math.max(p.minBet * 2, 10);
+
+/* ============ Combo engine ============ */
+function findCombos() {
+  const combos = [];
+  // Win/Lose pair: protected first bet on A, hedged by a guaranteed offer on B
+  for (const a of promos) {
+    if (!isProtection(a)) continue;
+    for (const b of promos) {
+      if (isProtection(b) || a.sportsbook === b.sportsbook) continue;
+      combos.push({
+        kind: 'Win/Lose pair', a, b,
+        est: convValue(a) + convValue(b),
+        capital: bankroll(a) + bankroll(b),
+        expires: Math.min(a.expiresDays, b.expiresDays),
+      });
+    }
+  }
+  // Dual guaranteed pairs: both offers pay regardless of the result
+  const g = promos.filter(p => !isProtection(p));
+  for (let i = 0; i < g.length; i++) {
+    for (let j = i + 1; j < g.length; j++) {
+      if (g[i].sportsbook === g[j].sportsbook) continue;
+      const est = convValue(g[i]) + convValue(g[j]);
+      if (est < 150) continue; // keep the board signal-dense
+      combos.push({
+        kind: 'Dual guaranteed', a: g[i], b: g[j],
+        est,
+        capital: bankroll(g[i]) + bankroll(g[j]),
+        expires: Math.min(g[i].expiresDays, g[j].expiresDays),
+      });
+    }
+  }
+  return combos.filter(c => c.est >= 150).sort((x, y) => y.est - x.est);
+}
+
+function applyFilter(combos) {
+  if (currentFilter === 'high') return combos.filter(c => c.est >= 1000);
+  if (currentFilter === 'mid') return combos.filter(c => c.est >= 500 && c.est < 1000);
+  if (currentFilter === 'cheap') return combos.filter(c => c.capital <= 100);
+  return combos;
+}
+
+/* ============ Rendering ============ */
+function slipHTML(c, compact) {
+  const vA = convValue(c.a), vB = convValue(c.b);
+  const winA = `
+    <div class="slip-outcome">
+      <div class="outcome-label">If your ${c.a.sportsbook} bet wins</div>
+      <div class="outcome-line"><span><b>${c.a.sportsbook}</b> cash win, net of hedge</span><span class="amt">+ ${money(vA)}</span></div>
+      <div class="outcome-line"><span><b>${c.b.sportsbook}</b> ${c.b.type.toLowerCase()} converts</span><span class="amt">+ ${money(vB)}</span></div>
+    </div>
+    <div class="slip-outcome">
+      <div class="outcome-label">If your ${c.a.sportsbook} bet loses</div>
+      <div class="outcome-line"><span><b>${c.a.sportsbook}</b> refund converts, net of hedge</span><span class="amt">+ ${money(vA)}</span></div>
+      <div class="outcome-line"><span><b>${c.b.sportsbook}</b> ${c.b.type.toLowerCase()} converts</span><span class="amt">+ ${money(vB)}</span></div>
+    </div>`;
+  const dualG = `
+    <div class="slip-outcome">
+      <div class="outcome-label">Side one</div>
+      <div class="outcome-line"><span><b>${c.a.sportsbook}</b> ${c.a.type.toLowerCase()} (${money(c.a.bonusValue)} face)</span><span class="amt">+ ${money(vA)}</span></div>
+      <div class="outcome-line"><span>Converts at ~${Math.round(rate(c.a) * 100)}&cent; on the dollar</span><span class="amt"></span></div>
+    </div>
+    <div class="slip-outcome">
+      <div class="outcome-label">Side two</div>
+      <div class="outcome-line"><span><b>${c.b.sportsbook}</b> ${c.b.type.toLowerCase()} (${money(c.b.bonusValue)} face)</span><span class="amt">+ ${money(vB)}</span></div>
+      <div class="outcome-line"><span>Converts at ~${Math.round(rate(c.b) * 100)}&cent; on the dollar</span><span class="amt"></span></div>
+    </div>`;
+  return `
+    ${compact ? '' : `<div class="slip-head">
+      <div class="slip-books" style="display:flex;align-items:center;gap:10px">
+        <span class="badge-pair">${badge(c.a.sportsbook)}${badge(c.b.sportsbook)}</span>
+        <span>${c.a.sportsbook}<span style="color:var(--ink-soft);font-weight:500;padding:0 4px">&times;</span>${c.b.sportsbook}</span>
+      </div>
+      <div class="slip-tag">${c.kind}</div>
+    </div>`}
+    <div class="slip-outcomes">${c.kind === 'Win/Lose pair' ? winA : dualG}</div>
+    <div class="slip-equals">
+      <span class="eq-label">Either way you collect</span>
+      <span class="eq-value">${money(c.est)}</span>
+    </div>`;
+}
+
+function renderHero(combos) {
+  const top = combos[0];
+  if (!top) return;
+  document.getElementById('heroSlip').innerHTML =
+    `<div class="slip">${slipHTML(top, false)}</div>`;
+}
+
+function renderStats(combos) {
+  document.getElementById('statBooks').textContent = promos.length;
+  document.getElementById('statBooksInline').textContent = promos.length;
+  document.getElementById('statCombos').textContent = combos.length;
+  document.getElementById('statBest').textContent = combos[0] ? money(combos[0].est) : '—';
+  const total = promos.reduce((s, p) => s + convValue(p), 0);
+  document.getElementById('statTotal').textContent = money(total);
+}
+
+function renderBoard() {
+  const combos = applyFilter(findCombos());
+  const el = document.getElementById('boardList');
+  if (!combos.length) {
+    el.innerHTML = `<div class="board-empty">No combos match this filter yet. Track more promos or widen the filter.</div>`;
+    return;
+  }
+  const rows = combos.map((c, i) => {
+    const locked = !isPro && i >= FREE_COMBOS;
+    if (locked) return `
+      <div class="combo locked-row" onclick="openProModal()" role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProModal()}" style="cursor:pointer">
+        <div class="combo-top">
+          <div class="combo-left locked">
+            <span class="combo-rank">${String(i + 1).padStart(2, '0')}</span>
+            <span class="badge-pair">${badge(c.a.sportsbook)}${badge(c.b.sportsbook)}</span>
+            <div>
+              <div class="combo-title">${c.a.sportsbook}<span>&times;</span>${c.b.sportsbook}</div>
+              <div class="combo-meta"><span>${c.kind}</span><span>${money(c.capital)} bankroll</span></div>
+            </div>
+          </div>
+          <div class="combo-right">
+            <div class="combo-profit">
+              <div class="amt locked">${money(c.est)}</div>
+              <div class="lbl">est. value</div>
+            </div>
+            <span class="lock-pill">Pro</span>
+          </div>
+        </div>
+      </div>`;
+    return `
+    <div class="combo" id="combo${i}">
+      <div class="combo-top" onclick="toggleCombo(${i})" role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCombo(${i})}">
+        <div class="combo-left">
+          <span class="combo-rank">${String(i + 1).padStart(2, '0')}</span>
+          <span class="badge-pair">${badge(c.a.sportsbook)}${badge(c.b.sportsbook)}</span>
+          <div>
+            <div class="combo-title">${c.a.sportsbook}<span>&times;</span>${c.b.sportsbook}</div>
+            <div class="combo-meta">
+              <span>${c.kind}</span>
+              <span>${money(c.capital)} bankroll</span>
+              <span class="${c.expires <= 7 ? 'warn' : ''}">${c.expires}d window</span>
+            </div>
+          </div>
+        </div>
+        <div class="combo-right">
+          <div class="combo-profit">
+            <div class="amt">${money(c.est)}</div>
+            <div class="lbl">est. value</div>
+          </div>
+          <span class="combo-caret">&#9660;</span>
+        </div>
+      </div>
+      <div class="combo-detail">
+        ${slipHTML(c, true)}
+        <div class="combo-steps">
+          ${c.kind === 'Win/Lose pair' ? `
+            <div class="step-line"><span class="step-n">01</span><span>Sign up on <b>${c.a.sportsbook}</b> and place your protected first bet — up to ${money(c.a.bonusValue)} to capture full value — on one side of a game.</span></div>
+            <div class="step-line"><span class="step-n">02</span><span>Hedge the opposite side on <b>${c.b.sportsbook}</b> (meets its ${money(c.b.minBet)} minimum and triggers the ${c.b.type.toLowerCase()}). Your stakes come back when the game settles.</span></div>
+            <div class="step-line"><span class="step-n">03</span><span>Convert any bonus bets by hedging them across the two books (~70&cent; on the dollar).</span></div>
+          ` : `
+            <div class="step-line"><span class="step-n">01</span><span>Trigger both offers: ${money(c.a.minBet)} on <b>${c.a.sportsbook}</b>, ${money(c.b.minBet)} on <b>${c.b.sportsbook}</b> — opposite sides of the same game.</span></div>
+            <div class="step-line"><span class="step-n">02</span><span>Both bonuses pay no matter the result; one hedge side also returns cash.</span></div>
+            <div class="step-line"><span class="step-n">03</span><span>Convert bonus bets by hedging them across the two books.</span></div>
+          `}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const banner = (!isPro && combos.length > FREE_COMBOS) ? `
+    <div class="pro-banner">
+      <div>
+        <h3>${combos.length - FREE_COMBOS} more combos on the board</h3>
+        <p>Full playbooks, every pairing, and new offers as they drop. The average combo on this board is worth $400+. <span class="price">$19.99/mo</span> or <span class="price">$99/yr</span> — cancel anytime.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <a class="btn btn-invert" href="${STRIPE_LINK_MONTHLY}" target="_blank" rel="noopener">Unlock the full board</a>
+        <button class="pro-link" onclick="openProModal()">Already subscribed? Enter your code</button>
+      </div>
+    </div>` : '';
+
+  el.innerHTML = rows + banner;
+}
+
+function renderBooks() {
+  document.getElementById('booksTable').innerHTML = promos.map((p, i) => {
+    const locked = !isPro && i >= FREE_BOOKS;
+    return `
+    <tr${locked ? ` onclick="openProModal()" style="cursor:pointer"` : ''}>
+      <td>
+        <div class="book-cell">
+          ${badge(p.sportsbook, true)}
+          <div>
+            <span class="book-name">${p.sportsbook}</span>
+            ${p.note ? `<div style="font-size:12px;color:var(--ink-soft);margin-top:2px" class="${locked ? 'num-locked' : ''}">${p.note}</div>` : ''}
+          </div>
+        </div>
+      </td>
+      <td class="num">${money(p.bonusValue)}</td>
+      <td class="num" style="color:var(--teal);font-weight:600">${locked ? `<span class="num-locked">${money(p.bonusValue)}</span>` : money(convValue(p))}</td>
+      <td class="num">${money(p.minBet)}</td>
+      <td>${locked ? '<span class="lock-pill">Pro</span>' : `<span class="type-pill ${isProtection(p) ? 'protection' : 'guaranteed'}">${p.type}</span>`}</td>
+      <td class="num">${p.expiresDays} days</td>
+    </tr>`;
+  }).join('');
+}
+
+
+/* ============ Hedge calculator ============ */
+function amToDec(str) {
+  const v = parseFloat(String(str).replace(/\s/g, ''));
+  if (isNaN(v) || Math.abs(v) < 100) return null;
+  return v > 0 ? 1 + v / 100 : 1 + 100 / Math.abs(v);
+}
+function fmt$(n) {
+  const sign = n < 0 ? '\u2212' : '';
+  return sign + '$' + Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function calcHedge() {
+  const type = document.getElementById('cType').value;
+  document.getElementById('cConvWrap').style.display = type === 'nosweat' ? 'block' : 'none';
+  const S = parseFloat(document.getElementById('cStake').value);
+  const dA = amToDec(document.getElementById('cOdds').value);
+  const dB = amToDec(document.getElementById('cHedgeOdds').value);
+  const r = Math.min(100, Math.max(0, parseFloat(document.getElementById('cConv').value) || 70)) / 100;
+  const errEl = document.getElementById('cError');
+  const out = document.getElementById('calcResult');
+  if (!S || S <= 0 || !dA || !dB) {
+    errEl.textContent = 'Enter a stake and valid American odds on both sides (|odds| \u2265 100).';
+    errEl.style.display = 'block';
+    out.innerHTML = '';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  let h, winA, winB, winLineA, loseLineA;
+  if (type === 'cash') {
+    h = S * dA / dB;
+    winA = S * (dA - 1) - h;
+    winB = h * (dB - 1) - S;
+    winLineA = [['Your bet pays', '+ ' + fmt$(S * (dA - 1))], ['Hedge stake lost', '\u2212 ' + fmt$(h)]];
+    loseLineA = [['Hedge pays', '+ ' + fmt$(h * (dB - 1))], ['Your stake lost', '\u2212 ' + fmt$(S)]];
+  } else if (type === 'bonus') {
+    h = S * (dA - 1) / dB;
+    winA = S * (dA - 1) - h;
+    winB = h * (dB - 1);
+    winLineA = [['Bonus bet pays (profit only)', '+ ' + fmt$(S * (dA - 1))], ['Hedge stake lost', '\u2212 ' + fmt$(h)]];
+    loseLineA = [['Hedge pays', '+ ' + fmt$(h * (dB - 1))], ['Bonus bet expires', fmt$(0)]];
+  } else {
+    h = S * (dA - r) / dB;
+    winA = S * (dA - 1) - h;
+    winB = h * (dB - 1) - S + r * S;
+    winLineA = [['Your bet pays', '+ ' + fmt$(S * (dA - 1))], ['Hedge stake lost', '\u2212 ' + fmt$(h)]];
+    loseLineA = [['Hedge pays', '+ ' + fmt$(h * (dB - 1))], ['Stake lost', '\u2212 ' + fmt$(S)], ['Refund converts at ' + Math.round(r * 100) + '%', '+ ' + fmt$(r * S)]];
+  }
+  const guaranteed = Math.min(winA, winB);
+  const pct = type === 'cash' ? null : Math.round(guaranteed / S * 100);
+  const lines = arr => arr.map(l => `<div class="outcome-line"><span>${l[0]}</span><span class="amt">${l[1]}</span></div>`).join('');
+  out.innerHTML = `
+    <div class="slip">
+      <div class="slip-head">
+        <div class="slip-books">Hedge <span>\u2192</span> ${fmt$(h)}</div>
+        <div class="slip-tag">${type === 'cash' ? 'Cash bet' : type === 'bonus' ? 'Bonus bet' : 'No-sweat bet'}</div>
+      </div>
+      <div class="slip-outcomes">
+        <div class="slip-outcome">
+          <div class="outcome-label">If your bet wins</div>
+          ${lines(winLineA)}
+        </div>
+        <div class="slip-outcome">
+          <div class="outcome-label">If your bet loses</div>
+          ${lines(loseLineA)}
+        </div>
+      </div>
+      <div class="slip-equals">
+        <span class="eq-label">Locked either way${pct !== null ? ' \u00b7 ' + pct + '% of face' : ''}</span>
+        <span class="eq-value">${fmt$(guaranteed)}</span>
+      </div>
+    </div>`;
+}
+
+/* ============ Interactions ============ */
+function toggleCombo(i) {
+  document.getElementById('combo' + i).classList.toggle('open');
+}
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderBoard();
+}
+function openModal() { document.getElementById('modalBack').classList.add('show'); }
+function closeModal() { document.getElementById('modalBack').classList.remove('show'); }
+function addPromo() {
+  const book = document.getElementById('fBook').value.trim();
+  const val = parseFloat(document.getElementById('fValue').value);
+  const min = parseFloat(document.getElementById('fMin').value) || 0;
+  const type = document.getElementById('fType').value;
+  const exp = parseInt(document.getElementById('fExp').value) || 7;
+  if (!book || !val) { alert('Add a sportsbook name and bonus value.'); return; }
+  let custom = [];
+  try { custom = JSON.parse(localStorage.getItem('promoarb_custom') || '[]'); } catch (e) {}
+  custom.push({ id: Date.now(), sportsbook: book, bonusValue: val, minBet: min, type, expiresDays: exp });
+  localStorage.setItem('promoarb_custom', JSON.stringify(custom));
+  closeModal();
+  ['fBook','fValue','fMin','fExp'].forEach(id => document.getElementById(id).value = '');
+  refresh();
+}
+
+function refresh() {
+  loadPromos();
+  const combos = findCombos();
+  renderStats(combos);
+  renderHero(combos);
+  renderBoard();
+  renderBooks();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  refresh();
+  const m = document.getElementById('stripeLinkMonthly');
+  const a = document.getElementById('stripeLinkAnnual');
+  if (m) m.href = STRIPE_LINK_MONTHLY;
+  if (a) a.href = STRIPE_LINK_ANNUAL;
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeProModal(); } });
+calcHedge();
+</script>
+</body>
+</html>
