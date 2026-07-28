@@ -25,7 +25,7 @@ const require = createRequire(import.meta.url);
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const data = require(join(root, 'api', 'data.js'));
 
-const SITE = 'https://YOUR-DOMAIN.com'; // <-- set before launch, then re-run
+const SITE = 'https://promoarb.com';
 const FREE_IDS = new Set([1, 7, 8, 'c1', 'c2', 'c3', 'c4', 'c5']);
 const MONTH = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
