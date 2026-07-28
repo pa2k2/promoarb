@@ -59,9 +59,31 @@ module.exports = async (req, res) => {
     for (const cust of (customers.data || [])) {
       const subs = await stripeGet('subscriptions?customer=' + encodeURIComponent(cust.id) + '&status=active&limit=1');
       if (!subs.data || !subs.data.length) continue;
+      const last4s = new Set();
       const pms = await stripeGet('payment_methods?customer=' + encodeURIComponent(cust.id) + '&type=card&limit=10');
-      const cardMatches = (pms.data || []).some(pm => pm.card && pm.card.last4 === last4);
-      if (cardMatches) {
+      for (const pm of (pms.data || [])) if (pm.card && pm.card.last4) last4s.add(pm.card.last4);
+
+      // Link subscribers have a 'link' payment method that exposes no card
+      // digits, so there is nothing to compare the typed last-4 against.
+      // Link verified ownership of the email with a one-time code at
+      // purchase, so when the customer has no card digits at all we accept
+      // the email match rather than locking Link payers out forever.
+      let linkOnly = false;
+      if (!last4s.size) {
+        const linkPms = await stripeGet('payment_methods?customer=' + encodeURIComponent(cust.id) + '&type=link&limit=1');
+        linkOnly = (linkPms.data || []).length > 0;
+        if (!linkOnly) {
+          // Digits can also live on past charges (e.g. detached cards).
+          const charges = await stripeGet('charges?customer=' + encodeURIComponent(cust.id) + '&limit=10');
+          for (const ch of (charges.data || [])) {
+            const d = ch.payment_method_details || {};
+            if (d.card && d.card.last4) last4s.add(d.card.last4);
+            if (d.type === 'link') linkOnly = true;
+          }
+        }
+      }
+
+      if (last4s.has(last4) || (linkOnly && !last4s.size)) {
         const now = Date.now();
         return res.status(200).json({ token: sign({ c: cust.id, iat: now, exp: now + TOKEN_TTL_MS }) });
       }
